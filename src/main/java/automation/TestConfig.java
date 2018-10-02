@@ -33,7 +33,7 @@ public class TestConfig {
 
   public static FluentWait getWait(Object o) {
     FluentWait<Object> wait = new FluentWait<Object>(o)
-        .withTimeout(Duration.ofSeconds(60))
+        .withTimeout(Duration.ofSeconds(Integer.parseInt(getConfig().getProperty("DEFAULT_TIMER", "60"))))
         .pollingEvery(Duration.ofSeconds(1));
 
     return wait;

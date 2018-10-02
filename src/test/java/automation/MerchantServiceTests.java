@@ -4,21 +4,21 @@ import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
-import static org.junit.Assert.assertThat;
 
-
+@Test(groups = "MerchantService")
 public class MerchantServiceTests {
   private String serviceUrl = TestConfig.getConfig().getProperty("MerchantServiceUrl");
   private boolean isDebug = false;
 
-  @Test
   public void merchantServiceSanityTest() {
     String id = createMerchant();
+
     assertThat(getMerchantStatus(id), equalToIgnoringCase("MASTER_ID_ALLOCATED"));
     //on board
     onboardMerchant(id);

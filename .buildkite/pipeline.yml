@@ -1,0 +1,6 @@
+steps:
+  - label: ":gradle: Test"
+    command: make runTests TESTGROUPS=$TESTGROUPS
+#    artifact_paths: "target/surefire-reports/*"
+    agents:
+      - queue=paycorp-dev
