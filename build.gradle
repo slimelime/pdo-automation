@@ -22,7 +22,7 @@ dependencies {
 task testGroups(type: Test) {
   useTestNG() {
     include "*/*"
-    if (project.hasProperty("groups") && "$groups" != "") {
+    if (project.hasProperty("groups") && "$groups" != "" && "$groups" != "all") {
       println "$groups"
       includeGroups "$groups"
     }
