@@ -1,6 +1,0 @@
-#!/bin/bash
-
-set -e
-
-echo "--- :checkered_flag: Running setup"
-eval $(aws ecr get-login)

@@ -1,4 +1,7 @@
-.PHONY: build
+SHELL := /bin/bash -e
+TENANT ?= payby
+
+.PHONY: runTests
 
 runTests:
 	@echo "run tests group: $$GROUPS"
