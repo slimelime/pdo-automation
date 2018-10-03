@@ -1,0 +1,38 @@
+---
+version: '2.3'
+services:
+  gradle:
+    image: gradle:4.9-jdk8
+    user: root
+    volumes:
+      - "$HOME/.aws:/root/.aws"
+      - "$HOME/.m2:/root/.m2"
+      - "$HOME/.gradle:/root/.gradle"
+      - ".:/app"
+    working_dir: /app
+    environment:
+      - BUILDKITE_REPO
+      - BUILDKITE_BRANCH
+      - BUILDKITE_COMMIT
+      - BUILDKITE_BUILD_URL
+      - BUILDKITE_BUILD_ID
+      - BUILDKITE_BUILD_NUMBER
+      - BUILDKITE_BUILD_CREATOR
+      - AWS_DEFAULT_REGION
+      - AWS_PROFILE
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_SESSION_TOKEN
+
+  awscli:
+    image: xueshanf/awscli:latest
+    volumes:
+      - ".:/build"
+      - "$HOME/.aws:/root/.aws"
+    working_dir: /build
+    environment:
+      - AWS_DEFAULT_REGION
+      - AWS_PROFILE
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_SESSION_TOKEN
