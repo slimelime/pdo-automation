@@ -5,4 +5,4 @@ TENANT ?= payby
 
 runTests:
 	@echo "run tests group: $$TESTGROUPS"
-  @docker-compose run --rm gradle gradle testGroups -Pgroups=$$TESTGROUPS
+	@docker-compose run --rm gradle gradle testGroups -Pgroups=$$TESTGROUPS
