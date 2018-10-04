@@ -6,6 +6,7 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.testng.annotations.Test;
 
+import static automation.TestConfig.getWait;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -14,16 +15,16 @@ import static org.hamcrest.Matchers.equalToIgnoringCase;
 @Test(groups = "MerchantService")
 public class MerchantServiceTests {
   private String serviceUrl = TestConfig.getConfig().getProperty("MerchantServiceUrl");
-  private boolean isDebug = false;
+  private boolean isDebug = true;
 
   public void merchantServiceSanityTest() {
     String id = createMerchant();
-
+    System.out.println("masterId=" + id);
     assertThat(getMerchantStatus(id), equalToIgnoringCase("MASTER_ID_ALLOCATED"));
     //on board
     onboardMerchant(id);
     // get merchant
-    TestConfig.getWait("")
+    getWait()
         .withMessage("Failed to get GATEWAY_ACCOUNT_CREATED")
         .until(o -> getMerchantStatus(id).equalsIgnoreCase("GATEWAY_ACCOUNT_CREATED"));
   }

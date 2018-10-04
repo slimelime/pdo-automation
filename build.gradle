@@ -16,7 +16,13 @@ dependencies {
   testCompile group: 'org.testng', name: 'testng', version: '6.14.3'
   compile group: 'org.slf4j', name:'slf4j-simple', version:'1.7.25'
   testCompile group: 'io.rest-assured', name: 'rest-assured', version: '3.0.0'
+  compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.12.0'
+  // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-api
+  compile group: 'org.seleniumhq.selenium', name: 'selenium-api', version: '3.12.0'
+// https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-support
   compile group: 'org.seleniumhq.selenium', name: 'selenium-support', version: '3.12.0'
+// https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-chrome-driver
+  compile group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version: '3.12.0'
 }
 
 task testGroups(type: Test) {
@@ -32,11 +38,3 @@ task testGroups(type: Test) {
   testLogging.showStandardStreams = true
   testLogging.exceptionFormat = "full"
 }
-
-//test {
-//  useTestNG {
-//    options {
-//      includeGroups System.properties['groups']
-//    }
-//  }
-//}

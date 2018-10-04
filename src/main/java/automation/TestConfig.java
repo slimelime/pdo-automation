@@ -1,5 +1,8 @@
 package automation;
 
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,17 +10,19 @@ import org.slf4j.LoggerFactory;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
 import java.util.Properties;
 
 /**
  * provide test data management.
  */
-public class TestConfig {
-  static Logger logger = LoggerFactory.getLogger(TestConfig.class);
+class TestConfig {
+  private static Logger logger = LoggerFactory.getLogger(TestConfig.class);
   private static Properties config = null;
 
-  public synchronized static Properties getConfig() {
+  synchronized static Properties getConfig() {
     if (config == null) {
       config = new Properties();
       try (InputStream inputStream = TestConfig.class.getResourceAsStream("/test.properties")) {
@@ -31,11 +36,22 @@ public class TestConfig {
     return config;
   }
 
-  public static FluentWait getWait(Object o) {
-    FluentWait<Object> wait = new FluentWait<Object>(o)
+  static FluentWait getWait() {
+    return new FluentWait<Object>("")
         .withTimeout(Duration.ofSeconds(Integer.parseInt(getConfig().getProperty("DEFAULT_TIMER", "60"))))
         .pollingEvery(Duration.ofSeconds(1));
+  }
 
-    return wait;
+  static WebDriverUtil createWebDriver() throws MalformedURLException {
+    if (TestConfig.getConfig().getProperty("webdriver.chrome.driver") != null) {
+      System.setProperty("webdriver.chrome.driver", TestConfig.getConfig().getProperty("webdriver.chrome.driver"));
+      ChromeDriver driver = new ChromeDriver();
+      return new WebDriverUtil(driver, 30);
+    } else {
+      String remoteWebDriverUrl = TestConfig.getConfig().getProperty("WebDriverUrl");
+      DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+      RemoteWebDriver driver = new RemoteWebDriver(new URL(remoteWebDriverUrl), capabilities);
+      return new WebDriverUtil(driver, 30);
+    }
   }
 }
