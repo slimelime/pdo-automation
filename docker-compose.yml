@@ -23,6 +23,9 @@ services:
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY
       - AWS_SESSION_TOKEN
+    depends_on:
+      - hub
+      - chrome
 
   awscli:
     image: xueshanf/awscli:latest
@@ -36,3 +39,21 @@ services:
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY
       - AWS_SESSION_TOKEN
+
+  chrome:
+    image: selenium/node-chrome:3.14.0-europium
+    volumes:
+      - ".:/build"
+    depends_on:
+      - hub
+    environment:
+      HUB_HOST: hub
+    scale: 3
+
+  hub:
+    image: selenium/hub:3.14.0-europium
+    ports:
+      - "4444:4444"
+    environment:
+      - GRID_NEW_SESSION_WAIT_TIMEOUT=60
+      - GRID_TIMEOUT=60
