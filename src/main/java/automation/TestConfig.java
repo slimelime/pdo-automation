@@ -38,20 +38,22 @@ class TestConfig {
 
   static FluentWait getWait() {
     return new FluentWait<Object>("")
-        .withTimeout(Duration.ofSeconds(Integer.parseInt(getConfig().getProperty("DEFAULT_TIMER", "60"))))
+        .withTimeout(Duration.ofSeconds(Integer.parseInt(getConfig().getProperty("DEFAULT_TIMER", "30"))))
         .pollingEvery(Duration.ofSeconds(1));
   }
 
   static WebDriverUtil createWebDriver() throws MalformedURLException {
+    int timeout = Integer.parseInt(TestConfig.getConfig().getProperty("DEFAULT_TIMER", "30"));
+
     if (TestConfig.getConfig().getProperty("webdriver.chrome.driver") != null) {
       System.setProperty("webdriver.chrome.driver", TestConfig.getConfig().getProperty("webdriver.chrome.driver"));
       ChromeDriver driver = new ChromeDriver();
-      return new WebDriverUtil(driver, 30);
+      return new WebDriverUtil(driver, timeout);
     } else {
       String remoteWebDriverUrl = TestConfig.getConfig().getProperty("WebDriverUrl");
       DesiredCapabilities capabilities = DesiredCapabilities.chrome();
       RemoteWebDriver driver = new RemoteWebDriver(new URL(remoteWebDriverUrl), capabilities);
-      return new WebDriverUtil(driver, 30);
+      return new WebDriverUtil(driver, timeout);
     }
   }
 }

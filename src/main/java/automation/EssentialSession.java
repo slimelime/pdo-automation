@@ -2,11 +2,15 @@ package automation;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.DecimalFormat;
 import java.util.List;
 
 public class EssentialSession implements AutoCloseable {
+  private static Logger logger = LoggerFactory.getLogger(EssentialSession.class);
+
   private WebDriverUtil driverUtil;
 
   private String essentialUrl = TestConfig.getConfig().getProperty("EssentialUrl");
@@ -16,6 +20,8 @@ public class EssentialSession implements AutoCloseable {
 
   EssentialSession() throws Exception {
     driverUtil = TestConfig.createWebDriver();
+    logger.info("web driver created");
+
     login();
   }
 
@@ -27,6 +33,8 @@ public class EssentialSession implements AutoCloseable {
     driverUtil.setText(By.id("UserName"), essentialUserName);
     driverUtil.setText(By.id("Password"), essentialUserPass);
     driverUtil.click(By.cssSelector("button.btn-primary"));
+
+    logger.info("user logged in");
 
     chooseBusiness();
   }
