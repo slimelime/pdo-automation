@@ -4,6 +4,8 @@ import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 
 import static automation.TestConfig.getWait;
@@ -14,12 +16,14 @@ import static org.hamcrest.Matchers.equalToIgnoringCase;
 
 @Test(groups = "MerchantService")
 public class MerchantServiceTests {
+  private static Logger logger = LoggerFactory.getLogger(OnlineCcPaymentTests.class);
+
   private String serviceUrl = TestConfig.getConfig().getProperty("MerchantServiceUrl");
-  private boolean isDebug = true;
+  private boolean isDebug = Boolean.parseBoolean(TestConfig.getConfig().getProperty("DebugMode", "false"));
 
   public void merchantServiceSanityTest() {
     String id = createMerchant();
-    System.out.println("masterId=" + id);
+    logger.info("masterId=" + id);
     assertThat(getMerchantStatus(id), equalToIgnoringCase("MASTER_ID_ALLOCATED"));
     //on board
     onboardMerchant(id);
