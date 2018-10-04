@@ -14,8 +14,8 @@ public class EssentialSession implements AutoCloseable {
   private WebDriverUtil driverUtil;
 
   private String essentialUrl = TestConfig.getConfig().getProperty("EssentialUrl");
-  private String essentialUserName = TestConfig.getConfig().getProperty("essentialUserName");
-  private String essentialUserPass = TestConfig.getConfig().getProperty("essentialUserPass");
+  private String essentialUserName = TestConfig.getConfig().getProperty("EssentialUserName");
+  private String essentialUserPass = TestConfig.getConfig().getProperty("EssentialUserPass");
 
 
   EssentialSession() throws Exception {

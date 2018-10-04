@@ -1,6 +1,8 @@
 package automation;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
+
 import java.net.MalformedURLException;
 
 public class TenMinutEmailService implements AutoCloseable {
@@ -18,7 +20,8 @@ public class TenMinutEmailService implements AutoCloseable {
 
   String getInvoiceLink() {
    return driverUtil.getWait(60*5)
-        .until(d -> {
+       .ignoring(TimeoutException.class)
+       .until(d -> {
           driverUtil.clickUtil(By.cssSelector("div#messagesList h3"), By.partialLinkText("Pay now"), 1);
           return driverUtil.getElement(By.partialLinkText("Pay now")).getAttribute("href");
         });
