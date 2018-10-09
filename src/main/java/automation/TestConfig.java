@@ -18,11 +18,11 @@ import java.util.Properties;
 /**
  * provide test data management.
  */
-class TestConfig {
+public class TestConfig {
   private static Logger logger = LoggerFactory.getLogger(TestConfig.class);
   private static Properties config = null;
 
-  synchronized static Properties getConfig() {
+  public synchronized static Properties getConfig() {
     if (config == null) {
       config = new Properties();
       try (InputStream inputStream = TestConfig.class.getResourceAsStream("/test.properties")) {
@@ -36,13 +36,13 @@ class TestConfig {
     return config;
   }
 
-  static FluentWait getWait() {
+  public static FluentWait getWait() {
     return new FluentWait<Object>("")
         .withTimeout(Duration.ofSeconds(Integer.parseInt(getConfig().getProperty("WebDriverTimeout", "30"))))
         .pollingEvery(Duration.ofSeconds(1));
   }
 
-  static WebDriverUtil createWebDriver() throws MalformedURLException {
+  public static WebDriverUtil createWebDriver() throws MalformedURLException {
     int timeout = Integer.parseInt(TestConfig.getConfig().getProperty("WebDriverTimeout", "30"));
 
     if (TestConfig.getConfig().getProperty("webdriver.chrome.driver") != null) {

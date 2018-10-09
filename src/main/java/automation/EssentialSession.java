@@ -44,11 +44,11 @@ public class EssentialSession implements AutoCloseable {
     driverUtil.clickUtil(By.cssSelector(".business-name a"), By.id("stats-container"));
   }
 
-  String createInvoice(int amountInDollor, String emailAddress) throws Exception {
+  String createInvoice(Invoice invoice) throws Exception {
     DecimalFormat df2 = new DecimalFormat(".##");
-    String invoiceNumber = createInvoice(df2.format(amountInDollor));
+    String invoiceNumber = createInvoice(df2.format(invoice.getAmountInCents()/100));
 
-    sendEmail(invoiceNumber, emailAddress);
+    sendEmail(invoiceNumber, invoice.getReceiptEmail());
 
     return invoiceNumber;
   }

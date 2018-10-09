@@ -13,22 +13,22 @@ import java.util.Optional;
 
 public class WebDriverUtil {
   private int timeOutInSeconds;
-  WebDriver driver;
+  public WebDriver driver;
 
   WebDriverUtil(WebDriver driver, int timeOutInSeconds) {
     this.driver = driver;
     this.timeOutInSeconds = timeOutInSeconds;
   }
 
-  WebDriverWait getWait() {
+  public WebDriverWait getWait() {
     return new WebDriverWait(driver, timeOutInSeconds);
   }
 
-  WebDriverWait getWait(int timeOutInSeconds) {
+  public WebDriverWait getWait(int timeOutInSeconds) {
     return new WebDriverWait(driver, timeOutInSeconds);
   }
 
-  void close() {
+  public void close() {
     if (driver != null) {
       try {
         driver.close();
@@ -55,7 +55,7 @@ public class WebDriverUtil {
     throw new Exception("there is no alert");
   }
 
-  void click(By locator) {
+  public void click(By locator) {
     getWait().until(d -> {
       try {
         d.findElement(locator).click();
@@ -95,7 +95,7 @@ public class WebDriverUtil {
     });
   }
 
-  String getText(By locator) {
+  public String getText(By locator) {
     WebElement element = getElement(locator);
 
     switch (element.getTagName()) {
@@ -159,7 +159,7 @@ public class WebDriverUtil {
     throw new Exception("Can't switch to frame by :" + idOrName);
   }
 
-  WebElement getElement(By locator) {
+  public WebElement getElement(By locator) {
      return getWait().until(ExpectedConditions.visibilityOfElementLocated(locator));
   }
 
@@ -234,7 +234,7 @@ public class WebDriverUtil {
     });
   }
 
-  void setText(By locator, String text) {
+  public void setText(By locator, String text) {
     getWait().until(d -> {
       try {
         WebElement element = d.findElement(locator);
