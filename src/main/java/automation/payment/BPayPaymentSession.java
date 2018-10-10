@@ -20,9 +20,9 @@ public class BPayPaymentSession implements IPayment {
   private static Logger logger = LoggerFactory.getLogger(BPayPaymentSession.class);
   private String bpayReference;
 
-  private String transactionFileS3Bucket = TestConfig.getConfig().getProperty("");
-  private String deFileS3Bucket = TestConfig.getConfig().getProperty("");
-  private String deAckFileS3Bucket = TestConfig.getConfig().getProperty("");
+  private String transactionFileS3Bucket = TestConfig.getConfig().getProperty("transactionFileS3Bucket");
+  private String deFileS3Bucket = TestConfig.getConfig().getProperty("deFileS3Bucket");
+  private String deAckFileS3Bucket = TestConfig.getConfig().getProperty("deAckFileS3Bucket");
 
   S3Service s3 = new S3Service();
 
@@ -74,7 +74,7 @@ public class BPayPaymentSession implements IPayment {
   }
 
   private List<String> getDeFiles() {
-    String today = new SimpleDateFormat("YYYYMMdd").format(Calendar.getInstance().getTime());
+   String today = new SimpleDateFormat("YYYYMMdd").format(Calendar.getInstance().getTime());
    return s3.listObjects(deFileS3Bucket.split(":")[0], String.format(deFileS3Bucket.split(":")[1], today.substring(0,6), today));
   }
 
