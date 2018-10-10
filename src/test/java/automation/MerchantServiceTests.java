@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.equalToIgnoringCase;
 
 @Test(groups = "MerchantService")
 public class MerchantServiceTests {
-  private static Logger logger = LoggerFactory.getLogger(OnlineCcPaymentTests.class);
+  private static Logger logger = LoggerFactory.getLogger(MerchantServiceTests.class);
 
   private String serviceUrl = TestConfig.getConfig().getProperty("MerchantServiceUrl");
   private boolean isDebug = Boolean.parseBoolean(TestConfig.getConfig().getProperty("DebugMode", "false"));

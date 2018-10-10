@@ -27,18 +27,18 @@ services:
       - hub
       - chrome
 
-  awscli:
-    image: xueshanf/awscli:latest
+  cmd-helper:
+    image: 232859778855.dkr.ecr.ap-southeast-2.amazonaws.com/paycorp-cmd-helper:latest
     volumes:
-      - ".:/build"
       - "$HOME/.aws:/root/.aws"
-    working_dir: /build
+      - ".:/app"
     environment:
-      - AWS_DEFAULT_REGION
-      - AWS_PROFILE
-      - AWS_ACCESS_KEY_ID
-      - AWS_SECRET_ACCESS_KEY
-      - AWS_SESSION_TOKEN
+      AWS_DEFAULT_REGION:
+      AWS_ACCESS_KEY_ID:
+      AWS_SECRET_ACCESS_KEY:
+      AWS_SESSION_TOKEN:
+      AWS_PROFILE:
+    working_dir: /app
 
   chrome:
     image: selenium/node-chrome:3.14.0-europium

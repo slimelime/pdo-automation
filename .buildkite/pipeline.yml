@@ -1,16 +1,5 @@
----
-env:
-  AWS_DEFAULT_REGION: ap-southeast-2
-
 steps:
-  #############################################################################
-  # Test
-  #############################################################################
-
-  - label: ":gradle: Test"
-    command:
-      - make runTests TESTGROUPS=$TESTGROUPS
-    env:
-      ENVIRONMENT: ssvc
+  - label: ":testflight: automation test"
+    command: make build
     agents:
-      queue: payby
+      - queue=paycorp-build
