@@ -2,4 +2,4 @@ steps:
   - label: ":testflight: automation test"
     command: make build
     agents:
-      - queue=paycorp-build
+      - queue=payby
