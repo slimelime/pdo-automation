@@ -33,6 +33,17 @@ public class MerchantServiceTests {
         .until(o -> getMerchantStatus(id).equalsIgnoreCase("GATEWAY_ACCOUNT_CREATED"));
   }
 
+  public void getMerchantStatusByGatewayMid() {
+    Response response = jsonRequest()
+        .param("gatewayMerchantId", "37375cb8-c17d-4947-8c0e-d9ab086fa6e6")
+        .when().get(serviceUrl);
+
+     response.then().assertThat()
+        .statusCode(200)
+        .extract().jsonPath()
+        .getString("status");
+  }
+
   private String getMerchantStatus(String id) {
     Response response = jsonRequest()
         .when().get(serviceUrl + "/" + id);

@@ -7,7 +7,11 @@ public class Invoice extends Properties{
   private String invoiceNumber;
   private String receiptEmail;
   private String invoiceLink;
-  private String paymentMethod;
+  private PaymentMethod paymentMethod = PaymentMethod.PAYCORP;
+
+  public enum PaymentMethod {
+    AI, PAYCORP, BPAY
+  }
 
   public int getAmountInCents() {
     return amountInCents;
@@ -41,11 +45,11 @@ public class Invoice extends Properties{
     this.invoiceLink = invoiceLink;
   }
 
-  public String getPaymentMethod() {
+  public PaymentMethod getPaymentMethod() {
     return paymentMethod;
   }
 
-  public void setPaymentMethod(String paymentMethod) {
+  public void setPaymentMethod(PaymentMethod paymentMethod) {
     this.paymentMethod = paymentMethod;
   }
 }

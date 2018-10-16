@@ -6,7 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class EssentialSession implements AutoCloseable {
   private static Logger logger = LoggerFactory.getLogger(EssentialSession.class);
@@ -18,14 +20,10 @@ public class EssentialSession implements AutoCloseable {
   private String essentialUserPass = TestConfig.getConfig().getProperty("EssentialUserPass");
 
 
-  EssentialSession() throws Exception {
+  private void login() throws Exception {
     driverUtil = TestConfig.createWebDriver();
     logger.info("web driver created");
 
-    login();
-  }
-
-  private void login() throws Exception {
     // login page
     driverUtil.driver.get(essentialUrl);
     driverUtil.driver.switchTo().activeElement();
@@ -35,18 +33,34 @@ public class EssentialSession implements AutoCloseable {
     driverUtil.click(By.cssSelector("button.btn-primary"));
 
     logger.info("user logged in");
-
-    chooseBusiness();
   }
 
-  private void chooseBusiness() {
-    // choose the first business name
-    driverUtil.clickUtil(By.cssSelector(".business-name a"), By.id("stats-container"));
+  private void chooseBusiness(String businessName) {
+   driverUtil.getWait().until(d -> {
+
+     try {
+       if (d.findElements(By.id("stats-container")).isEmpty()) {
+         d.findElements(By.cssSelector(".business-name a")).stream()
+             .filter(e -> e.getText().equalsIgnoreCase(businessName))
+             .findFirst().get()
+             .click();
+         return !d.findElements(By.id("stats-container")).isEmpty();
+       }
+       return true;
+     } catch (Exception e) {
+        return false;
+     }
+   });
   }
 
   String createInvoice(Invoice invoice) throws Exception {
-    DecimalFormat df2 = new DecimalFormat(".##");
-    String invoiceNumber = createInvoice(df2.format(invoice.getAmountInCents()/100));
+    login();
+
+    chooseBusiness(invoice.getPaymentMethod() == Invoice.PaymentMethod.BPAY? Invoice.PaymentMethod.PAYCORP.toString(): invoice.getPaymentMethod().toString());
+
+    NumberFormat formatter = NumberFormat.getCurrencyInstance();
+    String formatted = formatter.format(new Double(invoice.getAmountInCents())/100).replace("$", "");
+    String invoiceNumber = createInvoice(formatted);
 
     sendEmail(invoiceNumber, invoice.getReceiptEmail());
 
